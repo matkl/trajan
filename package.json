@@ -1,0 +1,12 @@
+{
+  "name": "trajan",
+  "description": "node.js game server",
+  "version": "0.0.1",
+  "author": "Matthias Klein <matthias@klein.pw>",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matkl/trajan.git"
+  },
+  "license": "MIT"
+}
