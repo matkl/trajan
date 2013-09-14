@@ -17,11 +17,13 @@ describe('server', function() {
     it('should register a new client', function(done) {
       var server = listen(function(port) {
         var gateway = trajangw();
-        gateway.addService('test', 'localhost:' + port);
-        var route = gateway.route('test', 'test', 'test');
+        gateway.addService('myservice', 'localhost:' + port);
+        var route = gateway.route('myservice', 'mygame', 'myclient');
         server.on('connection', function(client, gameId) {
           expect(Object.keys(server.clients)).to.have.length(1);
           expect(server.clientsCount).to.be(1);
+          expect(client).to.be.an('object');
+          expect(gameId).to.be('mygame');
           done();
         });
       });
