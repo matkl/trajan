@@ -15,5 +15,17 @@ describe('client', function() {
       });
     });
   });
-  it('should receive disconnect');
+  it('should receive disconnect', function(done) {
+    var server = listen(function(port) {
+      var gateway = trajangw();
+      gateway.addService('test', 'localhost:' + port);
+      var route = gateway.route('test', 'test', 'test');
+      server.on('connection', function(client, gameId) {
+        route.disconnect();
+        client.on('disconnect', function() {
+          done();
+        });
+      });
+    });
+  });
 });
