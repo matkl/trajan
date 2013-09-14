@@ -15,6 +15,6 @@
   "devDependencies": {
     "expect.js": "~0.2.0",
     "mocha": "~1.12.1",
-    "trajan-gateway": "0.0.1"
+    "trajan-gateway": "git://github.com/matkl/trajan-gateway.git"
   }
 }
