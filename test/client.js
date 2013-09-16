@@ -39,4 +39,15 @@ describe('client', function() {
       });
     });
   });
+  it('should send actions', function(done) {
+    var server = connect('s', 'g', 'c', function(route) {
+      server.on('connection', function(client, gameId) {
+        client.send('myaction');
+      });
+      route.on('message', function(action) {
+        expect(action).to.equal('myaction');
+        done();
+      });
+    });
+  });
 });
