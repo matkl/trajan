@@ -1,10 +1,10 @@
 /*global trajan,trajangw,expect,listen*/
 
-function connect(serviceId, gameId, clientId, callback) {
+function connect(serviceId, resourceId, clientId, callback) {
   var server = listen(function(port) {
     var gateway = trajangw();
     gateway.addService(serviceId, 'localhost:' + port);
-    var route = gateway.route(serviceId, gameId, clientId);
+    var route = gateway.route(serviceId, resourceId, clientId);
     if (callback) callback(route);
   });
   return server;
@@ -12,15 +12,15 @@ function connect(serviceId, gameId, clientId, callback) {
 
 describe('client', function() {
   it('should have an id', function(done) {
-    var server = connect('myservice', 'mygame', 'myclient');
-    server.on('connection', function(client, gameId) {
+    var server = connect('myservice', 'myresource', 'myclient');
+    server.on('client', function(client) {
       expect(client.id).to.equal('myclient');
       done();
     });
   });
   it('should receive actions', function(done) {
     var server = connect('s', 'g', 'c', function(route) {
-      server.on('connection', function(client, gameId) {
+      server.on('client', function(client, resourceId) {
         route.send('myaction');
         client.on('action', function(str) {
           expect(str).to.equal('myaction');
@@ -31,7 +31,7 @@ describe('client', function() {
   });
   it('should receive disconnect', function(done) {
     var server = connect('s', 'g', 'c', function(route) {
-      server.on('connection', function(client, gameId) {
+      server.on('client', function(client, resourceId) {
         route.disconnect();
         client.on('disconnect', function() {
           done();
@@ -41,7 +41,7 @@ describe('client', function() {
   });
   it('should send actions', function(done) {
     var server = connect('s', 'g', 'c', function(route) {
-      server.on('connection', function(client, gameId) {
+      server.on('client', function(client, resourceId) {
         client.send('myaction');
       });
       route.on('message', function(action) {
